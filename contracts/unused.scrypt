@@ -1,0 +1,133 @@
+contract Unused {
+    int x;
+    int y;
+
+    constructor(int a, int b) {
+
+    }
+
+
+    function f1(int a, int b) : int {
+        return 1;
+    }
+
+    function f2(int a, int b) : int {
+        int bbb = 1;
+        
+        return 1 > 2 ? bbb : b;
+    }
+
+    function f3(int a, int b) : int {
+        int bbb = 1; 
+
+        if(true) {
+            int a = 1;
+            a++;
+
+            int c = 1;
+        } else {
+            int b = 1;
+            b++;
+            int c = 1;
+        }
+        
+        return 1 ;
+    }
+
+
+
+    function f4(int i, int b) : int {
+    
+        loop (3) : i {
+            int b = 1;
+            int v = i + 1;
+            b++;
+        }
+
+        return 1;
+    }
+
+
+    function f5(int a, int b) : int {
+    
+        loop (3)  {
+            loop (3)  {
+                int a = 1;
+                a++;
+                int b = 1;
+                b++;
+            }
+        }
+
+        return a;
+    }
+
+    function f6(int a, int b) : int {
+    
+        loop (3)  {
+            
+        }
+
+        int c = 1;
+
+        loop(3) {
+            c = 3; //by assign
+        }
+
+        return a;
+    }
+
+    function f7(int a, int b) : int {
+        this.f6(a, a); // by function call
+        return 1;
+    }
+
+
+    function f8(int i): int{
+        i++;
+        { 
+            int i = 1;
+        }
+        return i;
+    }
+
+    function f9(int a): int{
+        int i = 0;
+        {
+            int i = 1;
+            i++;
+        }
+        return a;
+    }
+
+    function f10(int a): int{
+        int i = 0;
+        {
+            int i = 1;
+            {
+                int i = 1;
+                {
+                    int i = 1;
+                    i++;
+                }
+            }
+        }
+        return a;
+    }
+
+
+    function f11(int a): int{
+        int i = 0;
+        {
+            i++;
+            int i = 0;
+        }
+        
+        return a;
+    }
+
+    public function unlock(int z) {
+        require(true);
+    }
+
+}

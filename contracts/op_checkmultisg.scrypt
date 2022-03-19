@@ -1,0 +1,30 @@
+
+contract OPCHECKMULTISG {
+
+
+    // function op_checkmultisg(int a, int x
+    //     /*Due to a bug, an extra unused value (x) is 
+    //     removed from the stack. Script spenders must account for this 
+    //     by adding a junk value (typically zero) to the stack.*/
+    // , Sig s1, Sig s2) : bool {
+    //     asm {
+    //         OP_2 
+    //         030e2985fc22cdfe9a9e635abce8b6922f4267da91937f9fd5ac9cbafb4ad97993 
+    //         0277f9e8a45411143424881bc262f8ffd02d53e09d4dc4b752a66c0dcbc9ced509
+    //         022cf0b8ac336d5ab8f999c481de7de82c8ba6762eec613de18f8f3340c5df97c4
+    //         OP_3 
+    //         OP_CHECKMULTISIG //If all signatures are valid, 1 is returned, 0 otherwise. 
+    //     }
+    // }
+
+    public function unlock(int x, Sig s1, Sig s2) {
+        asm {
+            OP_2 
+            030e2985fc22cdfe9a9e635abce8b6922f4267da91937f9fd5ac9cbafb4ad97993 
+            0277f9e8a45411143424881bc262f8ffd02d53e09d4dc4b752a66c0dcbc9ced509
+            022cf0b8ac336d5ab8f999c481de7de82c8ba6762eec613de18f8f3340c5df97c4
+            OP_3 
+            OP_CHECKMULTISIG //If all signatures are valid, 1 is returned, 0 otherwise. 
+        }
+    }
+}
