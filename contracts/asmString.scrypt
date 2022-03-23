@@ -1,0 +1,15 @@
+contract AsmString {
+
+
+    static function equalImpl(bytes msg) : bool {
+        asm {
+            "你好world! @ 😊"
+            OP_EQUAL
+        }
+    }
+
+
+    public function unlock(bytes msg) {
+        require(AsmString.equalImpl(msg));
+    }
+}
