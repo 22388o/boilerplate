@@ -1,0 +1,10 @@
+
+import "./importB.scrypt";
+import "./importC.scrypt";
+contract A {
+    
+    public function unlock(int x) {
+        require(B.f1(x) == 9);
+        require(C.f1(x + 1) == 13);
+    }
+}

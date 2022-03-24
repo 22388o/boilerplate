@@ -1,0 +1,11 @@
+
+import "./importE.scrypt";
+
+library D {
+    
+    static const int N = 4;
+    
+    static function f1(int x) : int {
+        return E.sum(x) + D.N;
+    }
+}

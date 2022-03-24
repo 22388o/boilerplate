@@ -44,6 +44,17 @@
     {
       "type": "scrypt",
       "request": "launch",
+      "name": "Debug importA:unlock",
+      "program": "${workspaceFolder}/contracts/importA.scrypt",
+      "constructorArgs": [],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [
+        1
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
       "name": "Debug Demo",
       "program": "${workspaceFolder}/contracts/demo.scrypt",
       "constructorArgs": [

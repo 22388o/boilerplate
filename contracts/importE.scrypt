@@ -1,0 +1,13 @@
+library E {
+
+    static const int N = 3;
+
+
+    static function sum(int x) : int {
+        int sum = 0;
+        loop (N) {
+            sum += x;
+        }
+        return sum;
+    }
+}

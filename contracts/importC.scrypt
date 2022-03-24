@@ -1,0 +1,11 @@
+
+import "./importD.scrypt";
+
+library C {
+    
+    static const int N = 3;
+    
+    static function f1(int x) : int {
+        return D.f1(x) + C.N;
+    }
+}
