@@ -55,6 +55,28 @@
     {
       "type": "scrypt",
       "request": "launch",
+      "name": "Debug issue425:unlock",
+      "program": "${workspaceFolder}/contracts/issue425.scrypt",
+      "constructorArgs": [[1, 2]],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [
+        3
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug breakpoints:stopAtNestedLoop",
+      "program": "${workspaceFolder}/contracts/breakpoints.scrypt",
+      "constructorArgs": [],
+      "pubFunc": "stopAtNestedLoop",
+      "pubFuncArgs": [
+        1,1
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
       "name": "Debug Demo",
       "program": "${workspaceFolder}/contracts/demo.scrypt",
       "constructorArgs": [

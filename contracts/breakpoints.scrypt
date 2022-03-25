@@ -1,0 +1,74 @@
+contract Breakpoints {
+	static const int LOOP_COUNT = 3;
+    //breakpoints work with if
+    public function stopAtIf(int x) {
+        if (x > 0) 
+		{
+            x++;
+        }
+        require(x == 2);
+    }
+
+
+	//breakpoints work with loop
+    public function stopAtloop(int x) {
+        loop(LOOP_COUNT) 
+		{
+            x++;
+        }
+		loop(LOOP_COUNT) 
+			x++;
+        require(x == 6);
+    }
+
+
+    //breakpoints work with nested loop
+    public function stopAtNestedLoop(int x, int y) {
+        int sum = 0;
+        int counter = 0;
+        loop(LOOP_COUNT) 
+		{
+            sum = sum + this.sum(x, y);
+            x++;
+            y++;
+        }
+        require(sum == 378);
+    }
+
+    function sum(int x, int y): int {
+        int sum = 0;
+        loop(LOOP_COUNT) {
+            loop(LOOP_COUNT) {
+                x++;
+                y++;
+                sum +=  x + y;
+            }
+        }
+        return sum;
+    }
+
+
+    
+    public function stopAtInductVar(int x) {
+        int sum = 0;
+        loop(LOOP_COUNT) : i
+		{
+            sum += x + i;
+        }
+        require(sum == 6);
+    }
+
+    public function stopAtNestedLoopInductVar(int x) {
+        int sum = 0;
+        loop (LOOP_COUNT) : i {
+            loop (LOOP_COUNT) : j {
+                loop (LOOP_COUNT) : k {
+                    sum += i + j + k;
+                }
+            }
+        }
+
+        require(sum == 81);
+    }
+
+}

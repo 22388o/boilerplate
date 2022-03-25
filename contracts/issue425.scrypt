@@ -1,0 +1,24 @@
+
+library L {
+    static const int MAX_LOOP = 3;
+    static const int[3] N = [1,3, 4];
+    int x;
+    int y;
+    function find(int x) : bool {
+        bool found = false;
+        loop (MAX_LOOP) : i {
+            if(N[i] == x) {
+                found = true;
+            }
+            require(true);
+        }
+        return found;
+    }
+}
+
+contract Issue425 {
+    L l;
+    public function unlock(int x) {
+        require(this.l.find(x));
+    }
+}
