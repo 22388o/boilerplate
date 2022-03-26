@@ -1,0 +1,43 @@
+library D {
+    static const int N = 3;
+}
+contract ASMLoop {
+
+    static const int N = 3;
+
+    static function sum(int x) : int {
+        asm {
+            OP_DUP
+            loop (D.N) : i {
+                loop (D.N) : j {
+                    i
+                    j
+                    OP_ADD
+                    OP_ADD
+                }
+            }
+            OP_NIP
+        }
+    }
+
+    public function unlock(int x) {
+        asm {
+            OP_DUP
+            loop (N) : i {
+                loop (N) : j {
+                    i
+                    j
+                    OP_ADD
+                    OP_ADD
+                }
+            }
+            $xxx
+            OP_NUMEQUAL
+            OP_NIP
+        }
+    }
+
+    public function unlock2(int x) {
+        require(ASMLoop.sum(x) == 19);
+    }
+}
