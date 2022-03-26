@@ -4,6 +4,17 @@
     {
       "type": "scrypt",
       "request": "launch",
+      "name": "Debug asmString:unlock",
+      "program": "${workspaceFolder}/contracts/asmString.scrypt",
+      "constructorArgs": [],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [
+        "\"你好world! @ 😊\""
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
       "name": "Debug ASMLoop:unlock2",
       "program": "${workspaceFolder}/contracts/asmLoop.scrypt",
       "constructorArgs": [],
