@@ -1,0 +1,27 @@
+struct ST1 {
+	int x;
+}
+
+struct ST2 {
+	ST1[2] s;
+}
+
+
+contract C {
+	
+	int x;
+
+	ST2[1] st2;
+
+	int[2][2] aa;
+	
+	public function unlock(int x) {
+		require(this.aa[0][0] == 0);
+		require(this.aa[x][x] == 0);
+
+		require(this.aa[this.x][this.x] == 3);
+        require(this.aa[this.st2[0].s[0].x][this.st2[0].s[1].x] == 1);
+        require(this.aa[this.st2[0].s[1].x][this.st2[0].s[0].x] == 2);
+		require(true);
+	}
+}
