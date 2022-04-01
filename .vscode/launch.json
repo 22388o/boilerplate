@@ -42,6 +42,37 @@
     {
       "type": "scrypt",
       "request": "launch",
+      "name": "Debug arraySub:unlock3",
+      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "constructorArgs": [1, [{
+        "s": [{
+          "x": 0
+        }, {
+          "x": 1
+        }]
+      }], [
+        [0,1],[2,3]
+      ]],
+      "pubFunc": "unlock3",
+      "pubFuncArgs": [0, 
+        [{
+          "s" : [[{
+            "x" : 0,
+          }, {
+            "x" : 0,
+          }], [{
+            "x" : 0,
+          }, {
+            "x" : 0,
+          }]],
+          "a": false,
+          "b": "b''"
+        }]
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
       "name": "Debug asmString:unlock",
       "program": "${workspaceFolder}/contracts/asmString.scrypt",
       "constructorArgs": [],

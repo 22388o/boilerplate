@@ -8,7 +8,7 @@ struct ST2 {
 
 
 struct ST3 {
-	ST1[2] s;
+	ST1[2][2] s;
 	bool a;
 	bytes b;
 }
@@ -62,6 +62,24 @@ contract C {
 
 		require(this.st2 == [{[{11},{10}]}]);
 
+		require(true);
+	}
+
+
+	// write by index
+	public function unlock3(int x, ST3[1] st3) {
+
+		st3[x].s[x][x].x = 1;
+		st3[x].s[x][this.x].x = 2;
+		st3[x].s[this.x][x].x = 3;
+		st3[x].s[this.x][this.x].x = 4;
+
+		require(st3[x].s == [[{1}, {2}], [{3}, {4}]]);
+
+		st3[x] = {[[{1}, {1}], [{1}, {1}]], true, b'00'};
+
+		require(st3 == [{[[{1}, {1}], [{1}, {1}]], true, b'00'}]);
+		
 		require(true);
 	}
 }
