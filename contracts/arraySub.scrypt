@@ -7,6 +7,12 @@ struct ST2 {
 }
 
 
+struct ST3 {
+	ST1[2] s;
+	bool a;
+	bytes b;
+}
+
 contract C {
 	
 	int x;
@@ -15,6 +21,7 @@ contract C {
 
 	int[2][2] aa;
 	
+	// read by index
 	public function unlock(int x) {
 		require(this.aa[0][0] == 0);
 		require(this.aa[x][x] == 0);
@@ -22,6 +29,39 @@ contract C {
 		require(this.aa[this.x][this.x] == 3);
         require(this.aa[this.st2[0].s[0].x][this.st2[0].s[1].x] == 1);
         require(this.aa[this.st2[0].s[1].x][this.st2[0].s[0].x] == 2);
+		require(true);
+	}
+
+	// write by index
+	public function unlock2(int x) {
+		int[3] a = [0,0,0];
+
+		a[x] = 1;
+		x++;
+		a[x] = 1;
+		x++;
+		a[x] = 1;
+		require(a == [1,1,1]);
+
+		x = 0;
+		this.aa[x][x] = 5;
+		x = 1;
+		this.aa[x][x] = 8;
+		x = 0;
+		this.aa[x][this.x] = 2;
+		this.aa[this.x][x] = 3;
+		
+		require(this.aa == [
+			[5,2],[3,8]
+		]);
+
+
+		this.st2[x].s[x].x = 11;
+		x++;
+		this.st2[x].s[x].x = 10;
+
+		require(this.st2 == [{[{11},{10}]}]);
+
 		require(true);
 	}
 }
