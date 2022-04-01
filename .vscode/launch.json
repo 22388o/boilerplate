@@ -69,6 +69,56 @@
           "b": "b''"
         }]
       ]
+    },{
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug arraySub:unlock4",
+      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "constructorArgs": [1, [{
+        "s": [{
+          "x": 0
+        }, {
+          "x": 1
+        }]
+      }], [
+        [0,1],[2,3]
+      ]],
+      "pubFunc": "unlock4",
+      "pubFuncArgs": [0, 
+        [[[0,0], [0, 0]], [[0,0], [0, 0]]]
+      ]
+    },{
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug arraySub:unlock5",
+      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "constructorArgs": [1, [{
+        "s": [{
+          "x": 0
+        }, {
+          "x": 1
+        }]
+      }], [
+        [0,1],[2,3]
+      ]],
+      "pubFunc": "unlock5",
+      "pubFuncArgs": [1]
+    },{
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug arraySub:unlock6",
+      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "constructorArgs": [1, [{
+        "s": [{
+          "x": 0
+        }, {
+          "x": 1
+        }]
+      }], [
+        [0,1],[2,3]
+      ]],
+      "pubFunc": "unlock6",
+      "pubFuncArgs": [1]
     },
     {
       "type": "scrypt",

@@ -1,85 +1,239 @@
 struct ST1 {
-	int x;
+    int x;
 }
 
 struct ST2 {
-	ST1[2] s;
+    ST1[2] s;
 }
 
-
 struct ST3 {
-	ST1[2][2] s;
-	bool a;
-	bytes b;
+    ST1[2][2] s;
+    bool a;
+    bytes b;
+}
+
+struct ST4 {
+    int[2][2][2] a;
+    bool b;
+    bytes c;
 }
 
 contract C {
-	
-	int x;
+    static const int N = 1;
+    //static int[3][3] SS = [[0,0, 0], [0,0, 0], [0,0,0]];
+    int x;
 
-	ST2[1] st2;
+    ST2[1] st2;
 
-	int[2][2] aa;
-	
-	// read by index
-	public function unlock(int x) {
-		require(this.aa[0][0] == 0);
-		require(this.aa[x][x] == 0);
+    int[2][2] aa;
 
-		require(this.aa[this.x][this.x] == 3);
+    // read by index
+    public function unlock(int x) {
+        require(this.aa[0][0] == 0);
+        require(this.aa[x][x] == 0);
+
+        require(this.aa[this.x][this.x] == 3);
         require(this.aa[this.st2[0].s[0].x][this.st2[0].s[1].x] == 1);
         require(this.aa[this.st2[0].s[1].x][this.st2[0].s[0].x] == 2);
-		require(true);
-	}
+        require(true);
+    }
 
-	// write by index
-	public function unlock2(int x) {
-		int[3] a = [0,0,0];
+    // write by index
+    public function unlock2(int x) {
+        int[3] a = [0, 0, 0];
 
-		a[x] = 1;
-		x++;
-		a[x] = 1;
-		x++;
-		a[x] = 1;
-		require(a == [1,1,1]);
+        a[x] = 1;
+        x++;
+        a[x] = 1;
+        x++;
+        a[x] = 1;
+        require(a == [1, 1, 1]);
 
-		x = 0;
-		this.aa[x][x] = 5;
-		x = 1;
-		this.aa[x][x] = 8;
-		x = 0;
-		this.aa[x][this.x] = 2;
-		this.aa[this.x][x] = 3;
-		
-		require(this.aa == [
-			[5,2],[3,8]
-		]);
+        x = 0;
+        this.aa[x][x] = 5;
+        x = 1;
+        this.aa[x][x] = 8;
+        x = 0;
+        this.aa[x][this.x] = 2;
+        this.aa[this.x][x] = 3;
+
+        require(this.aa == [
+            [5, 2], 
+            [3, 8]
+        ]);
+
+        this.aa[C.N][x] = 1;
+        this.aa[x][C.N] = 11;
+        require(this.aa == [
+            [5, 11], 
+            [1, 8]
+        ]);
+
+        require(true);
+    }
+
+    // write parameter by index
+    public function unlock3(int x, ST3[1] st3) {
+
+        st3[x].s[x][x].x = 1;
+        st3[x].s[x][this.x].x = 2;
+        st3[x].s[this.x][x].x = 3;
+        st3[x].s[this.x][this.x].x = 4;
+
+        require(st3[x].s == [[{ 1 }, { 2 }], [{ 3 }, { 4 }]]);
+
+        st3[x] = { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' };
+
+        require(st3 == [{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }]);
+
+        this.st2[x].s[x].x = 11;
+
+        int ax = 0;
+        x++;
+        this.st2[ax].s[x].x = 10;
+
+        require(this.st2 == [{ [{ 11 }, { 10 }] }]);
+
+        require(true);
+    }
+
+    // index by complex expression
+    public function unlock4(int x, int[2][2][2] aaa) {
+
+        aaa[x][x][x] = 1;
+        aaa[x][x][this.f1(x)] = 2;
+        aaa[x][this.f1(x)][x] = 3;
+        aaa[x][this.f1(x)][this.f1(x)] = 4;
+        aaa[this.f1(x)][this.f1(x) + C.f2(x)][this.f1(x) + C.f2(x)] = 5;
+        aaa[this.f1(x)][x][this.f1(x)] = 6;
+        aaa[this.f1(x)][this.f1(x)][x] = 7;
+        aaa[this.f1(x)][this.f1(x)][this.f1(x)] = 8;
+        require(aaa == [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]);
+
+        aaa[this.f1(x)][((x + C.N) * 9 - 8) * this.f1(x)][((x + C.N) * 9 - 8) * this.f1(x) - 1] = 18;
+        require(aaa[this.f1(x)][((x + C.N) * 9 - 8) * this.f1(x)][((x + 1) * 9 - 8) * this.f1(x) - 1] == 18);
+        require(aaa[1][C.N][0] == 18);
+        require(aaa[C.N][(C.N + 1) * 2 - 3][0] == 18);
+
+        aaa[this.f1(x) - this.aa[0][0]][this.f1(x) * this.aa[x][x] + 1][this.f1(x) * this.aa[this.f1(x)][this.f1(x)] - 2] = 9;
+        require(aaa[this.f1(x) - this.aa[0][0]][this.f1(x) * this.aa[x][x] + 1][this.f1(x) * this.aa[this.f1(x)][this.f1(x)] - 2] == 9);
+
+        aaa[this.aa[x][x]][this.aa[x][x++]][this.x++] = 11;
+        require(aaa[this.aa[--x][x]][this.aa[x][x]][--this.x] == 11);
+
+        int[5] ccc = [0, 1, 2, 3, 4];
+
+        aaa[this.st2[C.f2(++x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x][this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 1][this.f1(x) - 1] = 19;
+        require(aaa[
+            this.st2[C.f2(x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x][
+            this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 1][
+            this.f1(x) - 1] == 19);
+
+        require(true);
+    }
+
+    // index in loop
+    public function unlock5(int x) {
+
+        bytes[3][4] a = [[b'', b'', b'', b''], [b'', b'', b'', b''], [b'', b'', b'', b'']];
+
+        loop (3) : i {
+            loop (4) : j {
+                a[i][j] = num2bin(i * j + i + j, 1);
+            }
+        }
+        require(a == [[b'00', b'01', b'02', b'03'], [b'01', b'03', b'05', b'07'], [b'02', b'05', b'08', b'0b']]);
+
+        loop (3) : i {
+            loop (4) : j {
+                a[i > 0 ? 0 : i][j > 0 ? 0 : j] = num2bin(i * j + i + j, 1);
+            }
+        }
+
+        require(a == [[b'0b', b'01', b'02', b'03'], [b'01', b'03', b'05', b'07'], [b'02', b'05', b'08', b'0b']]);
+
+        loop (3) : i {
+            loop (4) : j {
+                a[i * (x + 1) < 3 ? i * (x + 1) : 2][j * (x + 1) < 4 ? j * (x + 1) : 3] = num2bin(i * j + i + j, 1);
+            }
+        }
+
+        require(a == [[b'00', b'01', b'01', b'03'], [b'01', b'03', b'05', b'07'], [b'02', b'05', b'05', b'0b']]);
+
+        loop (3) : i {
+            loop (4) : j {
+                a[this.f1(i) < 3 ? this.f1(i) : 2][this.f1(j) < 4 ? this.f1(j) : 3] = num2bin(16, 1);
+            }
+        }
+
+        require(a == [[b'00', b'01', b'01', b'03'], [b'01', b'10', b'10', b'10'], [b'02', b'10', b'10', b'10']]);
+
+        require(true);
+    }
+
+    // change st array
+    public function unlock6(int x) {
+        ST1[3] st1Array = [{ 1 }, { 1 }, { 1 }];
+
+        st1Array[++x] = { 2 };
+        require(st1Array == [{ 1 }, { 1 }, { 2 }]);
+        st1Array[x].x = 11;
+        require(st1Array == [{ 1 }, { 1 }, { 11 }]);
+
+        ST1[3][3][3] st1Array2 = [[[{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }]], [[{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }]], [[{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }]]];
+        
+        x = 1;
+        loop (3) : i {
+            loop (3) : j {
+                loop (3) : k {
+                    st1Array2[i * (x + 1) -i ][j* (x + 1) -j][k * (x + 1) - k].x = 2;
+                }
+            }
+        }
+
+        require(st1Array2 == [[[{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }]], [[{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }]], [[{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }]]]);
 
 
-		this.st2[x].s[x].x = 11;
-		x++;
-		this.st2[x].s[x].x = 10;
-
-		require(this.st2 == [{[{11},{10}]}]);
-
-		require(true);
-	}
+        ST4[3] st4Array = [{ [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }];
 
 
-	// write by index
-	public function unlock3(int x, ST3[1] st3) {
+        st4Array[x].a[x][x][x] = 4;
+        require(st4Array[x].a[x][x][x] == 4);
+        st4Array[--x].a[x][x][x] = 3;
+        require(st4Array == [{ [[[3,1],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,4]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }]);
 
-		st3[x].s[x][x].x = 1;
-		st3[x].s[x][this.x].x = 2;
-		st3[x].s[this.x][x].x = 3;
-		st3[x].s[this.x][this.x].x = 4;
+        loop (3) : i {
+            loop (2) : j {
+                loop (2) : k {
+                    loop (2) : h {
+                        st4Array[i * (x + 1) -i ].a[j* (x + 1) -j][k * (x + 1) - k][h * (x + 1) - h] = 2;
+                    }
+                }
+            }
+            st4Array[i * (x + 1) -i ].b = false;
+            st4Array[i * (x + 1) -i ].c = b'01';
+        }
 
-		require(st3[x].s == [[{1}, {2}], [{3}, {4}]]);
+        require(st4Array == [{ [[[2,2],[2,2]], [[2,2],[2,2]]], false, b'01' }, { [[[2,2],[2,2]], [[2,2],[2,2]]], false, b'01' }, { [[[2,2],[2,2]], [[2,2],[2,2]]], false, b'01' }]);
 
-		st3[x] = {[[{1}, {1}], [{1}, {1}]], true, b'00'};
+        require(true);
+    }
 
-		require(st3 == [{[[{1}, {1}], [{1}, {1}]], true, b'00'}]);
-		
-		require(true);
-	}
+    
+
+    // write static by index
+    // public function unlock4(int x) {
+
+    // 	C.SS[x][x] = 1;
+
+    // 	require(true);
+    // }
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    static function f2(int x) : int {
+        return x * 2 - 1;
+    }
 }
