@@ -1,0 +1,117 @@
+struct ST1 {
+    int x;
+}
+
+struct ST2 {
+    ST1[2] s;
+}
+
+
+
+contract C {
+    static const int N = 1;
+    static int[3][3] SS = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+    int x;
+
+    ST2[1] st2;
+
+    int[2][2] aa;
+
+    static int n = 1;
+
+    // write by expression as subscript
+    public function unlock(int x) {
+        int[3] a = [0, 0, 0];
+
+        a[x] = 1;
+        x++;
+        a[x] = 1;
+        x++;
+        a[x] = 1;
+        require(a == [1, 1, 1]);
+
+        x = 0;
+        this.aa[x][x] = 5;
+        x = 1;
+        this.aa[x][x] = 8;
+        x = 0;
+        this.aa[x][this.x] = 2;
+        this.aa[this.x][x] = 3;
+
+        require(this.aa == [
+            [5, 2], 
+            [3, 8]
+        ]);
+
+        this.aa[C.N][x] = 1;
+        this.aa[x][C.N] = 11;
+        require(this.aa == [
+            [5, 11], 
+            [1, 8]
+        ]);
+
+        this.aa[--C.n][C.n + 1] = 6;
+        this.aa[this.f1(x) * C.f2(this.aa[C.n][C.n]) / 3 / 3][C.N - 1] = 11;
+        require(this.aa == [
+            [5, 6], 
+            [11, 8]
+        ]);
+
+        int[3][3][3] threeeD = [[[1, 1, 1], [1, 1, 1], [1, 1, 1]], [[1, 1, 1], [1, 1, 1], [1, 1, 1]], [[1, 1, 1], [1, 1, 1], [1, 1, 1]]];
+
+        threeeD[x] = [[2, 2, 2], [2, 2, 2], [2, 2, 2]];
+
+        threeeD[++x][x] = [2, 2, 2];
+
+        threeeD[++x][this.f1(x) / 3 + 1][this.f1(x) * C.n + 2] = 2;
+
+        require(threeeD == [[[2, 2, 2], [2, 2, 2], [2, 2, 2]], [[1, 1, 1], [2, 2, 2], [1, 1, 1]], [[1, 1, 1], [1, 1, 1], [1, 1, 2]]]);
+
+        x = 1;
+        loop (3) : i {
+            loop (3) : j {
+                loop (3) : k {
+                    threeeD[i * (x + 1) - i][j * (x + 1) - j][k * (x + 1) - k] = 333;
+                }
+            }
+        }
+
+        require(threeeD == [[[333, 333, 333], [333, 333, 333], [333, 333, 333]], [[333, 333, 333], [333, 333, 333], [333, 333, 333]], [[333, 333, 333], [333, 333, 333], [333, 333, 333]]]);
+
+        int i = 0;
+        threeeD[0][true ? this.st2[i].s[x].x * this.aa[x][i] / 11 : 0][i] = 4;
+        threeeD[++i][true ? this.st2[0].s[x].x * this.aa[x][i] % 3 : 0][i] = 4;
+
+        threeeD[this.f3(x)[0]][this.f3(x)[1]][this.f3(x)[x]] = 6;
+
+        require(threeeD == [[[333, 333, 333], [4, 333, 333], [333, 333, 333]], [[333, 333, 333], [333, 333, 333], [333, 4, 6]], [[333, 333, 333], [333, 333, 333], [333, 333, 333]]]);
+
+
+        SS[C.N][C.N] = SS[C.N][C.N]*10;
+        SS[C.N+1][C.N] = SS[C.N+1][C.N]*10;
+        SS[this.f1(x)][this.f3(x)[x]] = SS[this.f1(x)][this.f3(x)[x]]*10;
+
+        require(SS == [[1, 2, 3], [4, 50, 6], [7, 80, 90]]);
+
+        this.st2[x - 1].s = [{10},{10}];
+
+        this.st2[x - 1].s[x].x = 11;
+
+        require(this.st2 == [{[{10}, {11}]}]);
+
+        require(true);
+    }
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    function f3(int x) : int[2] {
+        return [x, ++x];
+    }
+
+
+    static function f2(int x) : int {
+        return x * 2 - 1 < 0 ? 0 : x * 2 - 1;
+    }
+}

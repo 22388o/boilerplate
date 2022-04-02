@@ -1,0 +1,160 @@
+struct ST1 {
+    int x;
+}
+
+struct ST2 {
+    ST1[2] s;
+}
+
+struct ST3 {
+    ST1[2][2] s;
+    bool a;
+    bytes b;
+}
+
+struct ST4 {
+    int[2][2][2] a;
+    bool b;
+    bytes c;
+}
+
+
+
+library L {
+    
+    int[2] a;
+    
+    function sum() : int {
+    
+        return this.a[0] + this.a[1];
+    }
+}
+
+contract C {
+    static const int N = 1;
+
+    int x;
+
+    ST2[1] st2;
+
+    int[2][2] aa;
+
+    static int n = 1;
+
+
+    // index in loop
+    public function unlock(int x) {
+
+        bytes[3][4] a = [[b'', b'', b'', b''], [b'', b'', b'', b''], [b'', b'', b'', b'']];
+
+        loop (3) : i {
+            loop (4) : j {
+                a[i][j] = num2bin(i * j + i + j, 1);
+            }
+        }
+        require(a == [[b'00', b'01', b'02', b'03'], [b'01', b'03', b'05', b'07'], [b'02', b'05', b'08', b'0b']]);
+
+        loop (3) : i {
+            loop (4) : j {
+                a[i > 0 ? 0 : i][j > 0 ? 0 : j] = num2bin(i * j + i + j, 1);
+            }
+        }
+
+        require(a == [[b'0b', b'01', b'02', b'03'], [b'01', b'03', b'05', b'07'], [b'02', b'05', b'08', b'0b']]);
+
+        loop (3) : i {
+            loop (4) : j {
+                a[i * (x + 1) < 3 ? i * (x + 1) : 2][j * (x + 1) < 4 ? j * (x + 1) : 3] = num2bin(i * j + i + j, 1);
+            }
+        }
+
+        require(a == [[b'00', b'01', b'01', b'03'], [b'01', b'03', b'05', b'07'], [b'02', b'05', b'05', b'0b']]);
+
+        loop (3) : i {
+            loop (4) : j {
+                a[this.f1(i) < 3 ? this.f1(i) : 2][this.f1(j) < 4 ? this.f1(j) : 3] = num2bin(16, 1);
+            }
+        }
+
+        require(a == [[b'00', b'01', b'01', b'03'], [b'01', b'10', b'10', b'10'], [b'02', b'10', b'10', b'10']]);
+
+
+        ST1[3] st1Array = [{ 1 }, { 1 }, { 1 }];
+
+        st1Array[++x] = { 2 };
+        require(st1Array == [{ 1 }, { 1 }, { 2 }]);
+        st1Array[x].x = 11;
+        require(st1Array == [{ 1 }, { 1 }, { 11 }]);
+
+        ST1[3][3][3] st1Array2 = [[[{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }]], [[{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }]], [[{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }], [{ 1 }, { 1 }, { 1 }]]];
+        
+        x = 1;
+        loop (3) : i {
+            loop (3) : j {
+                loop (3) : k {
+                    st1Array2[i * (x + 1) -i ][j* (x + 1) -j][k * (x + 1) - k].x = 2;
+                }
+            }
+        }
+
+        require(st1Array2 == [[[{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }]], [[{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }]], [[{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }], [{ 2 }, { 2 }, { 2 }]]]);
+
+
+        ST4[3] st4Array = [{ [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }];
+
+        st4Array[x] = { [[[3,3],[3,3]], [[2,2],[2,2]]], false, b'01' };
+        require(st4Array[x] == {[[[3,3],[3,3]], [[2,2],[2,2]]], false, b'01' });
+        st4Array[x].a[x] = [[3,3],[3,3]];
+        require(st4Array[x].a[x] == [[3,3],[3,3]]);
+        st4Array[x].a[x][x] = [4,4];
+        require(st4Array[x].a[x][x] == [4,4]);
+        st4Array[x].a[x][x][x] = 5;
+        require(st4Array[x].a[x][x][x] == 5);
+
+        st4Array[x].a[x][x][x] = 4;
+        require(st4Array[x].a[x][x][x] == 4);
+        st4Array[--x].a[x][x][x] = 3;
+        require(st4Array == [{ [[[3,1],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,4]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }]);
+
+        loop (3) : i {
+            loop (2) : j {
+                loop (2) : k {
+                    loop (2) : h {
+                        st4Array[i * (x + 1) -i ].a[j* (x + 1) -j][k * (x + 1) - k][h * (x + 1) - h] = 2;
+                    }
+                }
+            }
+            st4Array[i * (x + 1) -i ].b = false;
+            st4Array[i * (x + 1) -i ].c = b'01';
+        }
+
+        require(st4Array == [{ [[[2,2],[2,2]], [[2,2],[2,2]]], false, b'01' }, { [[[2,2],[2,2]], [[2,2],[2,2]]], false, b'01' }, { [[[2,2],[2,2]], [[2,2],[2,2]]], false, b'01' }]);
+        
+        L[3] la = [new L([1,1]), new L([1,2]), new L([1,1])];
+
+        L l = la[x];
+
+        l.a[x] = l.a[x] * 10;
+        l.a[x - 1] = l.a[x - 1] * 10;
+
+        require(l == new L([10,20]));
+
+        // loop (3) : i {
+        //     int x  = i;
+        //     if(x < 2) {
+        //         la[x].a[x] = la[x].a[x] * 10;
+        //     }
+        // }
+
+        require(true);
+    }
+
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    static function f2(int x) : int {
+        return x * 2 - 1;
+    }
+}

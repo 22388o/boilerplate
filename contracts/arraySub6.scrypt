@@ -1,0 +1,91 @@
+struct ST1 {
+    int x;
+}
+
+struct ST2 {
+    ST1[2] s;
+}
+
+struct ST3 {
+    ST1[2][2] s;
+    bool a;
+    bytes b;
+}
+
+struct ST4 {
+    int[2][2][2] a;
+    bool b;
+    bytes c;
+}
+
+struct ST5 {
+    ST3 a;
+    ST4[2] b;
+}
+
+library L {
+
+    static const int N = 3;
+
+    int[2][2] a;
+
+    ST3[2][2] st3a;
+
+    static function name(int x) : int {
+
+        return x;
+    }
+}
+
+contract C {
+    static const int N = 1;
+    //static int[3][3] SS = [[0,0, 0], [0,0, 0], [0,0,0]];
+    int x;
+
+    ST2[1] st2;
+
+    int[2][2] aa;
+
+    static int n = 1;
+
+    // change st array
+    public function unlock(int x) {
+        ST5 st5 = { { [[{ 0 }, { 0 }], [{ 0 }, { 0 }]], false, b'' }, [{ [[[1, 1], [1, 1]], [[1, 1], [1, 1]]], true, b'' }, { [[[1, 1], [1, 1]], [[1, 1], [1, 1]]], true, b'' }] };
+
+        st5.a.s[x][x].x = 1;
+
+        st5.a.s[st5.a.s[x][x].x][st5.b[x].a[x][x][x]].x = 2;
+
+        st5.b[len(st5.a.b)].a[len(st5.a.b) + 1][st5.b[x].a[x][x][x]][C.n++] = 11;
+
+        require(st5 == { { [[{ 1 }, { 0 }], [{ 0 }, { 2 }]], false, b'' }, [{ [[[1, 1], [1, 1]], [[1, 1], [1, 1]]], true, b'' }, { [[[1, 1], [1, 1]], [[1, 1], [1, 1]]], true, b'' }] });
+
+        // L[2] l = [new L(this.aa, [[{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }, { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }], [{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }, { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }]]), 
+        //     new L(this.aa, [[{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }, { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }], [{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }, { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }]])];
+
+        L l = new L(this.aa, [[{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }, { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }], [{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }, { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }]]);
+        l.a[x][x] = 11;
+        l.a[0][x + 1] = 22;
+        l.a[this.f1(x)][C.n] = 2;
+        l.a[C.f2(++x)][C.n - 1] = 77;
+
+        require(l.a == [[11, 22], [77, 2]]);
+
+        l.st3a[x][x].s[0][this.f1(x) - 1].x = 3;
+        require(l.st3a[x][x].s[0][this.f1(x) - 1] == { 3 });
+
+        l.st3a[x][x].s[this.f1(x) / 2][0].x = 4;
+        require(l.st3a[x][x].s[this.f1(x) / 2][0] == { 4 });
+
+        require(true);
+    }
+
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    static function f2(int x) : int {
+        return x * 2 - 1;
+    }
+}

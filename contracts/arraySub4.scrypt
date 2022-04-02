@@ -1,0 +1,127 @@
+struct ST1 {
+    int x;
+}
+
+struct ST2 {
+    ST1[2] s;
+}
+
+struct ST3 {
+    ST1[2][2] s;
+    bool a;
+    bytes b;
+}
+
+struct ST4 {
+    int[2][2][2] a;
+    bool b;
+    bytes c;
+}
+
+struct ST5 {
+    ST3 a;
+    ST4[2] b;
+}
+
+library L {
+
+    static const int N = 3;
+
+    static function f1(int x) : int {
+        return x;
+    }
+
+    function f2(int x, int[2][2] a) : int[2][2] {
+
+        a[x + 1][L.f1(x)] = a[x + 1][L.f1(x)] * 10;
+
+        a[x][L.f1(x) + 1] = a[x][L.f1(x) + 1] * 10;
+
+        return a;
+    }
+}
+
+contract C {
+    static const int N = 1;
+    //static int[3][3] SS = [[0,0, 0], [0,0, 0], [0,0,0]];
+    int x;
+
+    ST2[1] st2;
+
+    int[2][2] aa;
+
+    static int n = 1;
+
+    // write parameter by index
+    public function unlock(int x, ST3[1] st3, int[2][2][2] aaa) {
+
+        L l = new L();
+        this.aa = l.f2(x, this.aa);
+        require(this.aa == [[0,10], [20, 3]]);
+        st3[x].s[x][x].x = 1;
+        st3[x].s[x][this.x].x = 2;
+        st3[x].s[this.x][x].x = 3;
+        st3[x].s[this.x][this.x].x = 4;
+
+        require(st3[x].s == [[{ 1 }, { 2 }], [{ 3 }, { 4 }]]);
+
+        st3[x] = { [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' };
+
+        require(st3 == [{ [[{ 1 }, { 1 }], [{ 1 }, { 1 }]], true, b'00' }]);
+
+        this.st2[x].s[x].x = 11;
+
+        int ax = 0;
+        x++;
+        this.st2[ax].s[x].x = 10;
+
+        require(this.st2 == [{ [{ 11 }, { 10 }] }]);
+
+        aaa[x][x][x] = 1;
+        aaa[x][x][this.f1(x)] = 2;
+        aaa[x][this.f1(x)][x] = 3;
+        aaa[x][this.f1(x)][this.f1(x)] = 4;
+        aaa[this.f1(x)][this.f1(x) + C.f2(x)][this.f1(x) + C.f2(x)] = 5;
+        aaa[this.f1(x)][x][this.f1(x)] = 6;
+        aaa[this.f1(x)][this.f1(x)][x] = 7;
+        aaa[this.f1(x)][this.f1(x)][this.f1(x)] = 8;
+        require(aaa == [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]);
+
+        aaa[this.f1(x)][((x + C.N) * 9 - 8) * this.f1(x)][((x + C.N) * 9 - 8) * this.f1(x) - 1] = 18;
+        require(aaa[this.f1(x)][((x + C.N) * 9 - 8) * this.f1(x)][((x + 1) * 9 - 8) * this.f1(x) - 1] == 18);
+        require(aaa[1][C.N][0] == 18);
+        require(aaa[C.N][(C.N + 1) * 2 - 3][0] == 18);
+
+        aaa[this.f1(x) - this.aa[0][0]][this.f1(x) * this.aa[x][x] + 1][this.f1(x) * this.aa[this.f1(x)][this.f1(x)] - 2] = 9;
+        require(aaa[this.f1(x) - this.aa[0][0]][this.f1(x) * this.aa[x][x] + 1][this.f1(x) * this.aa[this.f1(x)][this.f1(x)] - 2] == 9);
+
+        aaa[this.aa[x][x]][this.aa[x][x++]][this.x++] = 11;
+        require(aaa[this.aa[--x][x]][this.aa[x][x]][--this.x] == 11);
+
+        int[5] ccc = [0, 1, 2, 3, 4];
+
+        aaa[this.st2[C.f2(++x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x][this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 1][this.f1(x) - 1] = 19;
+        require(aaa[
+            this.st2[C.f2(x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x][
+            this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 1][
+            this.f1(x) - 1] == 19);
+
+        ccc[ccc[this.st2[C.f2(x - 1) + this.f1(x) - 1].s[C.f2(x) + this.f1(x) - 2].x + 1] + 2] = 13;
+        ccc[ccc[this.st2[--C.n].s[this.f1(C.n)].x]] = 11;
+        ccc[ccc[len(b'00') + 1]] = 12;
+        require(ccc == [0, 11, 12, 3, 13]);
+        aaa[ccc[ccc[len(b'')]]][ccc[ccc[len(b'')]]][ccc[ccc[len(b'')]]] = 0xff;
+        aaa[ccc[ccc[len(b'')]] + 1][ccc[ccc[len(b'')]]][ccc[ccc[len(b'')]] + 1] = 0xfe;
+        require(aaa == [[[0xff, 11], [3, 4]], [[5, 254], [18, 9]]]);
+
+        require(true);
+    }
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    static function f2(int x) : int {
+        return x * 2 - 1;
+    }
+}

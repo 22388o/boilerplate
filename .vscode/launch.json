@@ -4,8 +4,8 @@
     {
       "type": "scrypt",
       "request": "launch",
-      "name": "Debug arraySub:unlock",
-      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "name": "Debug arraySub1:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub1.scrypt",
       "constructorArgs": [1, [{
         "s": [{
           "x": 0
@@ -23,8 +23,8 @@
     {
       "type": "scrypt",
       "request": "launch",
-      "name": "Debug arraySub:unlock2",
-      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "name": "Debug arraySub2:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub2.scrypt",
       "constructorArgs": [1, [{
         "s": [{
           "x": 0
@@ -34,7 +34,7 @@
       }], [
         [0,1],[2,3]
       ]],
-      "pubFunc": "unlock2",
+      "pubFunc": "unlock",
       "pubFuncArgs": [
         0
       ]
@@ -42,8 +42,19 @@
     {
       "type": "scrypt",
       "request": "launch",
-      "name": "Debug arraySub:unlock3",
-      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "name": "Debug arraySub3:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub3.scrypt",
+      "constructorArgs": [],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [
+        
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug arraySub4:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub4.scrypt",
       "constructorArgs": [1, [{
         "s": [{
           "x": 0
@@ -53,7 +64,7 @@
       }], [
         [0,1],[2,3]
       ]],
-      "pubFunc": "unlock3",
+      "pubFunc": "unlock",
       "pubFuncArgs": [0, 
         [{
           "s" : [[{
@@ -67,31 +78,14 @@
           }]],
           "a": false,
           "b": "b''"
-        }]
-      ]
-    },{
-      "type": "scrypt",
-      "request": "launch",
-      "name": "Debug arraySub:unlock4",
-      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
-      "constructorArgs": [1, [{
-        "s": [{
-          "x": 0
-        }, {
-          "x": 1
-        }]
-      }], [
-        [0,1],[2,3]
-      ]],
-      "pubFunc": "unlock4",
-      "pubFuncArgs": [0, 
+        }],
         [[[0,0], [0, 0]], [[0,0], [0, 0]]]
       ]
     },{
       "type": "scrypt",
       "request": "launch",
-      "name": "Debug arraySub:unlock5",
-      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "name": "Debug arraySub5:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub5.scrypt",
       "constructorArgs": [1, [{
         "s": [{
           "x": 0
@@ -101,13 +95,13 @@
       }], [
         [0,1],[2,3]
       ]],
-      "pubFunc": "unlock5",
+      "pubFunc": "unlock",
       "pubFuncArgs": [1]
     },{
       "type": "scrypt",
       "request": "launch",
-      "name": "Debug arraySub:unlock6",
-      "program": "${workspaceFolder}/contracts/arraySub.scrypt",
+      "name": "Debug arraySub6:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub6.scrypt",
       "constructorArgs": [1, [{
         "s": [{
           "x": 0
@@ -117,8 +111,8 @@
       }], [
         [0,1],[2,3]
       ]],
-      "pubFunc": "unlock6",
-      "pubFuncArgs": [1]
+      "pubFunc": "unlock",
+      "pubFuncArgs": [0]
     },
     {
       "type": "scrypt",
