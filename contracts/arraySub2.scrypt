@@ -99,6 +99,27 @@ contract C {
 
         require(this.st2 == [{[{10}, {11}]}]);
 
+        bytes[3][3][3] aaa = repeat(repeat(repeat(b'', 3), 3), 3);
+
+        int i0 = 0;
+        int i1 = 0;
+        int i2 = 0;
+
+        loop (3) {
+            i1 = 0;
+            loop (3) {
+                i2 = 0;
+                loop (3) {
+                    aaa[i0][this.f1(i1) - 1][this.f3(i2)[0]] = num2bin(9, 1);
+                    i2++;
+                }
+                i1++;
+            }
+            i0++;
+        }
+
+        require(aaa == [[[b'09', b'09', b'09'], [b'09', b'09', b'09'], [b'09', b'09', b'09']], [[b'09', b'09', b'09'], [b'09', b'09', b'09'], [b'09', b'09', b'09']], [[b'09', b'09', b'09'], [b'09', b'09', b'09'], [b'09', b'09', b'09']]]);
+
         require(true);
     }
 
