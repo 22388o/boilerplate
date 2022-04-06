@@ -57,7 +57,7 @@ contract C {
 
         L l = new L();
         this.aa = l.f2(x, this.aa);
-        require(this.aa == [[0,10], [20, 3]]);
+        require(this.aa == [[0, 10], [20, 3]]);
         st3[x].s[x][x].x = 1;
         st3[x].s[x][this.x].x = 2;
         st3[x].s[this.x][x].x = 3;
@@ -77,6 +77,7 @@ contract C {
 
         require(this.st2 == [{ [{ 11 }, { 10 }] }]);
 
+        x = 0;
         aaa[x][x][x] = 1;
         aaa[x][x][this.f1(x)] = 2;
         aaa[x][this.f1(x)][x] = 3;
@@ -100,19 +101,20 @@ contract C {
 
         int[5] ccc = [0, 1, 2, 3, 4];
 
-        aaa[this.st2[C.f2(++x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x][this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 1][this.f1(x) - 1] = 19;
-        require(aaa[
-            this.st2[C.f2(x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x][
-            this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 1][
+        aaa[this.st2[C.f2(++x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x / 10 -1][
+            this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 10][
+            this.f1(x) - 1] = 19;
+        require(aaa[this.st2[C.f2(x) + this.f1(x) - 3].s[C.f2(x) + this.f1(x) - 2].x / 10 -1][
+            this.st2[this.aa[x][x] - ccc[ccc[3]]].s[C.f2(this.aa[x][x]) - this.f1(x) * 2].x - 10][
             this.f1(x) - 1] == 19);
 
-        ccc[ccc[this.st2[C.f2(x - 1) + this.f1(x) - 1].s[C.f2(x) + this.f1(x) - 2].x + 1] + 2] = 13;
-        ccc[ccc[this.st2[--C.n].s[this.f1(C.n)].x]] = 11;
+        ccc[ccc[this.st2[C.f2(x - 1) + this.f1(x) - 1].s[C.f2(x) + this.f1(x) - 2].x - 8] + 2] = 13;
+        ccc[ccc[this.st2[--C.n].s[this.f1(C.n)].x/10]] = 11;
         ccc[ccc[len(b'00') + 1]] = 12;
         require(ccc == [0, 11, 12, 3, 13]);
         aaa[ccc[ccc[len(b'')]]][ccc[ccc[len(b'')]]][ccc[ccc[len(b'')]]] = 0xff;
         aaa[ccc[ccc[len(b'')]] + 1][ccc[ccc[len(b'')]]][ccc[ccc[len(b'')]] + 1] = 0xfe;
-        require(aaa == [[[0xff, 11], [3, 4]], [[5, 254], [18, 9]]]);
+        require(aaa == [[[0xff, 19], [3, 4]], [[5, 254], [18, 9]]]);
 
         require(true);
     }

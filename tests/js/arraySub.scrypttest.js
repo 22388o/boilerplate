@@ -116,7 +116,7 @@ describe('Test sCrypt contract ArraySub In Javascript', () => {
       [0, 1], [2, 3]
     ]);
 
-    result = c.unlock(0).verify()
+    result = c.unlock(1).verify()
     expect(result.success, result.error).to.be.true
   });
 

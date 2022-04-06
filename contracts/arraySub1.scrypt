@@ -64,8 +64,8 @@ contract C {
 
         require(st4Array[this.f1(C.n)] == { [[[2, 1], [1, 1]], [[1, 1], [1, 1]]], true, b'' });
 
-        require(SS[C.N]== [4, 5, 6]);
-        require(SS[this.f1(C.n)]== [7, 8, 9]);
+        require(SS[C.N] == [4, 5, 6]);
+        require(SS[this.f1(C.n)] == [7, 8, 9]);
         require(SS[this.f1(C.n)][C.N] == 8);
         require(SS[C.N + 1][C.f2(C.n)] == 8);
 
@@ -81,8 +81,8 @@ contract C {
         require(l.a[this.f1(C.n) - 1][C.N] == 3);
 
         require(l.st3a[this.f1(C.n) - 1][C.N].s[0][0].x == 13);
-        require(l.st3a[C.f2(L.N)%5][C.N].s[x][x++].x == 5);
-        require(l.st3a[C.f2(L.N)%5][C.N].s[x][x].x == 8);
+        require(l.st3a[C.f2(L.N) % 5][C.N].s[x][x++].x == 5);
+        require(l.st3a[C.f2(L.N) % 5][C.N].s[x][x].x == 8);
 
         require(true);
     }

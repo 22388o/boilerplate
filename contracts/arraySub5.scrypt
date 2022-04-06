@@ -111,10 +111,8 @@ contract C {
         st4Array[x].a[x][x][x] = 5;
         require(st4Array[x].a[x][x][x] == 5);
 
-        st4Array[x].a[x][x][x] = 4;
-        require(st4Array[x].a[x][x][x] == 4);
-        st4Array[--x].a[x][x][x] = 3;
-        require(st4Array == [{ [[[3,1],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,4]]], true, b'' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }]);
+        st4Array[--x].a[x][x][++x] = 6;
+        require(st4Array == [{ [[[1,6],[1,1]], [[1,1],[1,1]]], true, b'' }, { [[[3,3],[3,3]], [[3,3],[4,5]]], false, b'01' }, { [[[1,1],[1,1]], [[1,1],[1,1]]], true, b'' }]);
 
         loop (3) : i {
             loop (2) : j {
