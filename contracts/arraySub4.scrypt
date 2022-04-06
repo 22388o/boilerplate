@@ -43,7 +43,7 @@ library L {
 
 contract C {
     static const int N = 1;
-    //static int[3][3] SS = [[0,0, 0], [0,0, 0], [0,0,0]];
+    static int[3][3] SS = [[0,0, 0], [0,0, 0], [0,0,0]];
     int x;
 
     ST2[1] st2;
@@ -116,6 +116,19 @@ contract C {
         aaa[ccc[ccc[len(b'')]] + 1][ccc[ccc[len(b'')]]][ccc[ccc[len(b'')]] + 1] = 0xfe;
         require(aaa == [[[0xff, 19], [3, 4]], [[5, 254], [18, 9]]]);
 
+        SS[SS[x][x]][SS[x][x]] = 1;
+        SS[x - 1][x] = 1;
+        SS[x - 1][this.f1(x)] = 1;
+
+        SS[x][x - 1] = 1;
+        SS[x][x] = 1;
+        SS[C.f2(x)][this.f1(x)] = 1;
+
+        SS[this.f1(x)][x - 1] = 1;
+        SS[x + 1][x] = 1;
+        SS[C.f2(x) + 1][C.f2(x) + 1] = 1;
+
+        require(C.SS == [[1,1, 1], [1,1, 1], [1,1, 1]]);
         require(true);
     }
 
