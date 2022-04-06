@@ -113,6 +113,14 @@
       ]],
       "pubFunc": "unlock",
       "pubFuncArgs": [0]
+    },{
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug arraySub7:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub7.scrypt",
+      "constructorArgs": [],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [0]
     },
     {
       "type": "scrypt",
