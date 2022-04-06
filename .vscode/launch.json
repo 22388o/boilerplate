@@ -112,7 +112,7 @@
         [0,1],[2,3]
       ]],
       "pubFunc": "unlock",
-      "pubFuncArgs": [0]
+      "pubFuncArgs": [1]
     },{
       "type": "scrypt",
       "request": "launch",
