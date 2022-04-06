@@ -137,12 +137,12 @@ contract C {
 
         require(l == new L([10,20]));
 
-        // loop (3) : i {
-        //     int x  = i;
-        //     if(x < 2) {
-        //         la[x].a[x] = la[x].a[x] * 10;
-        //     }
-        // }
+        loop (3) : i {
+            int x  = i;
+            if(x < 2) {
+                la[x].a[x] = la[x].a[x] * 10;
+            }
+        }
 
         require(true);
     }
