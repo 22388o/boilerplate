@@ -1,0 +1,59 @@
+struct ST1 {
+    int x;
+    bool y;
+    bytes z;
+    int[2] xx;
+}
+
+struct ST2 {
+    bool a;
+    ST1[2] b;
+    bytes c;
+}
+
+
+library L {
+
+    static const int N = 2;
+    function getST2(int x /*x = 0*/) : ST2 {
+
+
+        ST2 st2 = {false, [{x,false,b'01', [1,2]}, {3,false,b'02', [4,5]}], b'03'};
+        return st2;
+        
+    }
+
+}
+
+contract C {
+
+    static  int N = 1;
+
+    int[3][3] a;
+
+    public function unlock(int x) {
+        L l = new L();
+
+        this.a[x][x] = l.getST2(2).b[x].xx[x];
+        this.a[x][x+1] = l.getST2(2).b[x].xx[x+1];
+        this.a[x][x+2] = l.getST2(2).b[x+1].xx[x];
+        this.a[x+1][x] = l.getST2(2).b[this.f1(x)].xx[x+1];
+        this.a[x+1][x + 1] = l.getST2(2).b[C.f2(x + 1)].x;
+        this.a[x+1][l.getST2(2).b[x].xx[N]] = l.getST2(2).b[this.f1(x)].xx[x];
+
+        this.a[x+2][0] = l.getST2(2).b[this.a[x][x]].xx[x] * 10;
+        this.a[x+2][this.f1(x)] = this.a[x][l.getST2(2).b[x].xx[x]] * 10;
+        this.a[x+2][this.f1(x) * 2] = this.a[1][l.getST2(2).b[x].xx[x]] * 10;
+        require(this.a == [[1,2,4],[5,3,4],[40,20,30]]);
+
+        require(true);
+    }
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    static function f2(int x) : int {
+        return x * 2 - 1;
+    }
+}

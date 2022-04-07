@@ -129,6 +129,14 @@
       "constructorArgs": [[[0,0,0],[0,0,0],[0,0,0]]],
       "pubFunc": "unlock",
       "pubFuncArgs": [0]
+    },{
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug arraySub9:unlock",
+      "program": "${workspaceFolder}/contracts/arraySub9.scrypt",
+      "constructorArgs": [[[0,0,0],[0,0,0],[0,0,0]]],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [0]
     },
     {
       "type": "scrypt",
