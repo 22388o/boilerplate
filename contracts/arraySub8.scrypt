@@ -1,0 +1,141 @@
+struct ST1 {
+    int x;
+    bool y;
+    bytes z;
+    int[2] xx;
+}
+
+struct ST2 {
+    bool a;
+    ST1[2] b;
+    bytes c;
+}
+
+struct ST3 {
+    bool a;
+    bytes c;
+    ST2[2] b;
+}
+
+struct ST4 {
+    int[2] a;
+    ST3[2][2][2] b;
+    bytes c;
+}
+
+struct ST5 {
+    ST1 a;
+    ST2[2][2][2] b;
+    ST3 c;
+    ST4 d;
+    int[2][2] e;
+    bytes f;
+}
+
+library L {
+
+    static const int N = 2;
+    static function getST5(int x /*x = 0*/) : ST5 {
+
+        ST1 st1 = {0,false,b'', [0,0]};
+        ST2 st2 = {false, [st1, st1], b''};
+        ST3 st3 = {false, b'', [st2, st2]};
+        ST4 st4 = {[0,0], [[[st3, st3], [st3, st3]], [[st3, st3], [st3, st3]]], b''};
+        ST5 st5 = {st1, [[[st2,st2], [st2,st2]], [[st2,st2], [st2,st2]]], st3, st4, [[0, 0], [0, 0]], b''};
+
+
+        st5.a = L.updateSt1(st5.a, x);
+
+        st5.b[x][x][x] = L.updateSt2(st2, x);
+
+        return st5;
+    }
+
+
+    static function updateSt1(ST1 st1, int x /*x = 0*/) : ST1 {
+
+        st1.x = 1;
+        st1.y = true;
+        st1.z = b'01';
+        st1.xx[x] = 1;
+        st1.xx[x + 1] = st1.xx[x] + 1;
+        return st1;
+    }
+
+    static function updateSt2(ST2 st2, int x /*x = 0*/) : ST2 {
+
+        st2.a = true;
+        st2.b[x].x = 10;
+        st2.b[x].y = true;
+        st2.b[x].z = b'01';
+        st2.b[x].xx[x] = 20;
+        st2.b[x].xx[x + 1] = st2.b[x].xx[x] + 1;
+
+        st2.b[L.f2(x +1)] = L.updateSt1(st2.b[L.f2(x +1)], x);
+
+        st2.c = b'01';
+
+        return st2;
+    }
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    static function f2(int x) : int {
+        return x * 2 - 1;
+    }
+}
+
+contract C {
+
+    static  int N = 1;
+
+    int[3][3] a;
+
+    public function unlock(int x) {
+        ST5 st5 = L.getST5(x);
+
+        this.a[x][x] = st5.a.xx[x];
+        this.a[x][x+1] = st5.a.xx[st5.a.xx[x]];
+        require(this.a[x][x] == 1);
+        require(this.a[x][x+1] == 2);
+        this.a[x+1][x] = st5.b[x][x][x].b[x].xx[st5.a.xx[x]];
+        require(this.a[x+1][x] == 21);
+
+        this.a[x+1][x + 1] = st5.b[x][0][x].b[0].xx[st5.a.xx[x]];
+        require(this.a[x+1][x + 1] == 21);
+
+        st5.b[x][0][x].b[0].xx[st5.a.xx[x]] = 33;
+
+        require(st5.b[x][x][x].b[x].xx[st5.a.xx[x]] == 33);
+
+        st5.b[x][x][x].b[x].xx[st5.a.xx[x]] = 66;
+
+        require(st5.b[x][x][N-1].b[x].xx[st5.a.xx[x]] == 66);
+        require(st5.b[0][x][x].b[x].xx[st5.a.xx[x]] == 66);
+        require(st5.b[x][0][x].b[x].xx[st5.a.xx[x]] == 66);
+        require(st5.b[x][x][0].b[x].xx[st5.a.xx[x]] == 66);
+        require(st5.b[x][x][x].b[0].xx[st5.a.xx[x]] == 66);
+        require(st5.b[N-1][x][x].b[x].xx[st5.a.xx[0]] == 66);
+
+        st5.d.b[x][x][x].b[x].b[x].xx[x+1] = 77;
+
+        this.a[x+1][x + 1] = st5.d.b[x][x][N-1].b[x].b[x].xx[x+1];
+        require(this.a[x+1][x + 1] == 77);
+
+        // st5.d.b[x][0][x].b[x].b[x].xx[C.f2(x) + 1] = 88;
+        // this.a[x+1][x + 1] = st5.d.b[x][0][x].b[x].b[x].xx[this.f1(x) - 1];
+        // require(this.a[x+1][x + 1] == 88);
+
+        require(true);
+    }
+
+    function f1(int x) : int {
+        return x + 1;
+    }
+
+    static function f2(int x) : int {
+        return x * 2 - 1;
+    }
+}

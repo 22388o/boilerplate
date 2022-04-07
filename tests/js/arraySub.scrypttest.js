@@ -130,4 +130,14 @@ describe('Test sCrypt contract ArraySub In Javascript', () => {
   //   expect(result.success, result.error).to.be.true
   // });
 
+
+  it('arraySub8 should unlock succeeded', () => {
+    const C = buildContractClass(compileContract('arraySub8.scrypt'));
+
+    c = new C([[0,0,0], [0,0,0], [0,0,0]]);
+
+    result = c.unlock(0).verify()
+    expect(result.success, result.error).to.be.true
+  });
+
 });
