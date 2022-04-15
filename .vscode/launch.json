@@ -17,6 +17,32 @@
     {
       "type": "scrypt",
       "request": "launch",
+      "name": "Debug identity:mathAlgebra",
+      "program": "${workspaceFolder}/contracts/identity.scrypt",
+      "constructorArgs": [
+        
+      ],
+      "pubFunc": "mathAlgebra",
+      "pubFuncArgs": [
+        -1, -1, -1
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug intbitwise:unlock",
+      "program": "${workspaceFolder}/contracts/intBitwise.scrypt",
+      "constructorArgs": [
+        
+      ],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [
+        9,1
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
       "name": "Debug Demo",
       "program": "${workspaceFolder}/contracts/intBitwise.scrypt",
       "constructorArgs": [
