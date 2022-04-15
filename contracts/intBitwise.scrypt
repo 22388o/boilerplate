@@ -1,0 +1,113 @@
+contract Test {
+  static int n = -3;
+  public function unlock(int x, int y) {
+    int a = 5678;
+    require((0 & 0) == 0);
+    require((-1 & 0) == 0);
+    require((-1 & -1) == -1);
+    require((-(0xfffff) & 0) == 0);
+    require((0 & -1) == 0);
+    require((0 & -(0xfffff)) == 0);
+    require((-1 & 1) == 1);
+    require((-(0xfffff) & 1) == 1);
+    require((-2 & 1) == 0);
+    require((-(0xffffe) & 1) == 0);
+    require((this.f2(1)[this.f1(0) - 1] & this.f1(0)) == 1);
+    require((a & 0) == 0);
+    require((a & 1) == 0);
+    require((a + 1 & 1) == 1);
+    require((a | 0) == a);
+    require((a + 1 | 0) == a + 1);
+    require((a | 1) == 5679);
+    require((a + 1 | 1) == 5679);
+    require((0 | 0) == 0);
+    require((this.f2(1)[this.f1(0) - 1] | this.f1(0)) == 1);
+    require(pack(a) == b'2e16');
+    require((~a) == unpack(~b'2e16'));
+    require((~a) == -(0x69d1));
+    require((~0) == 0);
+    require((~1) == -126);
+    require(~(5 - 4) == -126);
+    require((~-1) == 126);
+    require(~n == 0x7c);
+    n = 0;
+    require(~(++n) == -126);
+    require(~(a - 5679) == 126);
+    require(~this.f1(a) == -(0x69d0));
+    require(~this.f2(1)[this.f1(0) - 1] == -126);
+    require(~(-2142284617) == 5199030);
+
+    
+
+    require((1 ^ 1) == 0);
+    require((-1 ^ -1) == 0);
+    require((-1 ^ 1) == 0);
+    require((0 ^ 0) == 0);
+    require((a ^ unpack(b'ffff')) == (~a));
+    require((a ^ 0xffff) == unpack(b'2e1600' ^ b'ffff00'));
+    require(15 == (13 ^ 1 + 1));
+    require(15 == (13 | 1 + 1));
+    require(0 == (13 & 1 + 1));
+
+    int b = -12;
+    
+    require((b & 0) == 0);
+    require((b & 1) == 0);
+    require((b | 0) == b);
+    require((b | 1) == -13);
+    require(pack(b) == b'8c');
+    require((~b) == unpack(~b'8c'));
+    require((~b) == 115);
+    require(~b++ == 115);
+    require((b ^ unpack(b'ff')) == (~b));
+    require((--b ^ 0xff) == unpack(b'0c80' ^ b'ff00'));
+
+    require((a & b) == unpack(b'2e16' & b'0c80'));
+    require((a | b) == unpack(b'2e16' | b'0c80'));
+    require((a ^ b) == unpack(b'2e16' ^ b'0c80'));
+
+    int c = unpack(b'ffff');
+    require((c &= a) == a);
+    require ((c |= b) == unpack(b'2e16' | b'0c80'));
+    require ((c ^= 0) == unpack(b'2e96' ^ b'0000'));
+
+    int cc = c &= c &= a;
+
+    require(cc == 5678);
+
+    require(((cc | ~c) & a & a ^ b) == -5666);
+    require(((1 | ~1) & 1 & 1 ^ -1) == 0);
+
+    int[3] arr = [0,0,0];
+
+    a = 1;
+    b = 10000;
+
+    arr[a & b] = 1;
+    arr[a | b & a] = 2;
+    arr[(a | b & a ^ c) - 5677] = 3;
+
+    require(arr == [1,2,3]);
+    
+    require(Test.f3(5) == -126);
+
+    require(y == (x & y));
+  }
+
+
+  function f1(int x) : int {
+    return x + 1;
+  }
+
+  function f2(int x) : int[2] {
+    return [x, x+1];
+  }
+
+  static function f3(int x): int {
+    int mask = 0x04;
+    x ^= ~mask;
+
+    x |= ((x << n) & mask);
+    return x;
+  }
+} 

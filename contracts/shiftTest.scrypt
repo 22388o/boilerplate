@@ -1,0 +1,263 @@
+
+library Shifta {
+
+    // return 2^n
+    static function pow2 (int n) : int {
+
+        return unpack(
+            num2bin(0, n/8) +
+            (b'0100' << n%8)
+        );
+    }
+
+    // left shift number x by n bits
+    static function left (int x, int n) : int {
+      require(n > 0);
+      return x * pow2(n);
+    }
+
+    // right shift number x by n bits
+    static function right (int x, int n) : int {
+      require(n > 0);
+      int ret = x / pow2(n);
+      return x % 2 == -1 ? (ret - 1) : (x < 0 && ret == 0) ? -1 : ret;
+    }
+
+}
+
+
+contract Test {
+
+  static int N = 1;
+
+  public function unlock(int x, int n) {
+
+    require(Shifta.left(x, n) == x << n);
+    require(Shifta.right(x, n) == x >> n);
+
+
+    require(1 == 1 << 0);
+    require(-1 == -1 << 0);
+    require(-2 == -2 << 0);
+    require(2 == 2 << 0);
+    require(-1 == -1 >> 0);
+    require(-2 == -2 >> 0);
+    require(1 == 1 >> 0);
+    require(2 == 2 >> 0);
+    require(0 == 0 >> 0);
+    require(0 == 0 << 0);
+
+
+    require(-2 == -1 << 1);
+    require(2 == 1 << 1);
+    require(-6 == -3 << 1);
+    require(6 == 3 << 1);
+    require(16 == 8 << 1);
+    require(-8192 == -8 << 10);
+    require(14 == 7 << 1);
+    require(0 == 0 << 1);
+    require(0 == 0 << 100);
+    require(-8 == -1 << 3);
+    require(-8 == -1 << 3);
+    
+
+    require(1 == 2 >> 1);
+    require(0 == 1 >> 1);
+    require(0 == 1 >> 3);
+    require(0 == 2 >> 3);
+    require(5 == 11 >> 1);
+    require(55 == 111 >> 1);
+    require(0 == 0 >> 1);
+    require(0 == 1 >> 1);
+    require(4 == 8 >> 1);
+    require(-2 == -3 >> 1);
+    require(-2 == -4 >> 1);
+    require(-1 == -1 >> 1);
+    require(-5000 == -10000 >> 1);
+    require(-5001 == -10001 >> 1);
+    require(-1 == -3 >> 3);
+    require(-1 == -3 >> 2);
+    require(0 == 8 >> 100);
+    require(0 == 10000000000 >> 100);
+    require(0 == 10 >> 10);
+
+    //1.  if right shift count >= width of positive number to be shift, return 0, as other languages
+    require(0 == 1 >> 100);
+    require(0 == 2 >> 100);
+    //2.  if right shift count >= width of negative number to be shift, return -1, as other languages
+    require(-1 == -(0xff) >> 100);
+    require(-1 == -1 >> 100); 
+    require(-1 == -2 >> 100);
+    //3. if left shift count >= width of any number to be shift, scrypt returns correct result, no overflow
+    require(12676506002282294014967032053760000000000 == 10000000000 << 100);  
+    require(-1267650600228229401496703205376 == -1 << 100);
+
+    require(0 == 0 << 1);
+    require(0 == 0 >> 1);
+    require(8 == 4 << 2 - 1);
+    require(15 == (4 << 2) - 1);
+    require(0 == (4 >> 2) - 1);
+
+    require(-6 == -3 << 2 - 1);
+    require(-2 == -3 >> 2 - 1);
+    require(-12 == -3 << 2 * 1);
+    require(-12 == (-3 << 2) * 1);
+    require(-1 == -3 >> 2 * 1);
+    require(-1 == (-3 >> 2) * 1);
+
+
+    x = 0;
+    require(384 == (this.f1(x) + 5) << (10 * 2 - 7 / 3) / 3);
+
+    require(4 == (this.f1(x) * Test.f2(x)) << this.f1(x) + Test.f2(x));
+
+    require(-4 == (this.f1(x) * Test.f2(x) - 2) << this.f1(x) + Test.f2(x));
+
+    require(0 == (this.f1(x) * Test.f2(x)) >> this.f1(x) + Test.f2(x));
+
+    require(-1 == (this.f1(x) * Test.f2(x) - 2) >> this.f1(x) + Test.f2(x));
+
+    require(-2 == (this.f1(x) * Test.f2(x) - 4) >> this.f1(x) * Test.f2(x));
+
+    int[3] a = [0, 1,3];
+
+    a[this.f1(x) << 1] = 4;
+
+    require(a == [0, 1, 4]);
+    require(a[this.f1(x) << 1] == 4);
+
+    require(a[N << 1] == 4);
+
+    require(N << 1 == 2);
+    require(N * -1 << Test.f2(x) == -2);
+
+    require(N * -1 << a[this.f1(x) << 1] == -16);
+
+    int z = 1;
+
+
+    require(1 == (z <<= 0));
+    require(1 == (z >>= 0));
+    z = -1;
+    require(-1 == (z <<= 0));
+    require(-1 == (z >>= 0));
+    z = -2;
+    require(-2 == (z <<= 0));
+    require(-2 == (z >>= 0));
+    z = 2;
+    require(2 == (z <<= 0));
+    require(2 == (z >>= 0));
+
+    z = 1;
+
+    require((z <<= 8) == 256);
+    require(z == 256);
+    require((z <<= 8) == 65536);
+
+    require((z >>= 8) == 256);
+
+    require((z >>= 8) == 1);
+
+    require((z <<= z) == 2);
+
+    int y = z <<= z + 1;
+
+    require(y == 16);
+    require(z == 16);
+
+    z = -1;
+
+    a[this.f1(z <<= 1) + 1] = 10;
+    require(a[0] == 10);
+    require(z == -2);
+    require(this.f1(z <<= 3) == -15);
+
+    z = 0;
+    z <<= 3;
+
+    require(z == 0);
+
+    z = 1;
+
+    y = z <<= (z <<= 1);
+    require(y == 4);
+    require(z == 4);
+    z = 1;
+
+    y = z <<= z <<= 1;
+    require(y == 4);
+    require(z == 4);
+
+
+    z >>= 100;
+    require(0 == z);
+    z = -(0xff);
+    z >>= 1000;
+    require(-1 == z);
+    z = -1;
+    require(-1 == (z >>= 100)); 
+    z = -2;
+    require(-1 == (z >>= 100));
+    z = 10000000000;
+    require(12676506002282294014967032053760000000000 == (z <<= 100));
+    z = -1;  
+    require(-1267650600228229401496703205376 == (z <<= 100));
+
+    require(b'0000' == b'0001' >> 2);
+    require(b'0004' == b'0001' << 2);
+    require(b'0008' == b'0001' << 3);
+    require(b'7fff' == b'ffff' >> 1);
+    require(b'fffe' == b'ffff' << 1);
+    require(b'fffc' == b'ffff' << 2);
+    require(b'fff8' == b'ffff' << 3);
+
+    require(b'fff0' == b'ffff' << 3 + 1);
+    require(b'fff0' == b'ffff' << this.f1(3));
+
+    bytes b = b'00ff';
+    b <<= 8;
+
+    require(b == b'ff00');
+
+    b >>= 8;
+    require(b == b'00ff');
+
+
+    require(true);
+  }
+
+
+  public function shitNegative(int x) {
+    int z = 0;
+    z <<= -1;
+    require(true);
+  }
+
+  public function shitNegative1(int x) {
+    int z = 0;
+    z << -1;
+    require(true);
+  }
+  
+
+  public function shitNegative2(int x) {
+    int z = 0;
+    z >> -1;
+    require(true);
+  }
+
+  public function shitNegative3(int x) {
+    int z = 0;
+    z >>= -1;
+    require(true);
+  }
+
+
+  function f1(int x) : int {
+    return x + 1;
+  }
+
+  static function f2(int x) : int {
+    return x + 1;
+  }
+}

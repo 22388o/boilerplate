@@ -1,0 +1,84 @@
+
+contract Test {
+
+    public function bitwiseAlgebra(int x, int y, int z) {
+
+        require(-(-x) == x);
+        require(x * 1 == x);
+        require(x / 1 == x);
+
+        // AND
+        require((x & 0) == 0);
+        require((x & y) == (y & x));
+        require((x & (y & z)) == ((x & y) & z));
+        require((x & getFF(x)) == x);
+        require((x & x) == x);
+
+        // OR
+        require((x | 0) == x);
+        require((x | y) == (y | x));
+        require((x | (y | z)) == ((x | y) | z));
+        require((x | getFF(x)) == getFF(x));
+        require((x | x) == x);
+
+        //NOT
+        require(~(-2142284617) == 5199030);
+        //require(~(~2146777862) == 2146777862);
+        //require(~(~x) == x);
+
+        // XOR
+        require((x ^ y) == (y ^ x));
+        require((x ^ (y ^ z)) == ((x ^ y) ^ z));
+        require((x ^ 0) == x);
+        require((x ^ x) == 0);
+        require((x ^ y ^ y) == x);
+
+        require((x ^ getFF(x)) == ~x);
+        //require((x ^ y) == ((x | y) & (~x | ~y)));
+        //require((x ^ y) == ((x & ~y) | (~x & y)));
+
+        // Others
+
+        // require(~(x & y) == (~x | ~y));
+        //require((x | (y & z)) == ((x | y) & (x | z)));
+
+        //        require((x & (y | z)) == ((x & y) | (x & z)));
+
+        //        require((x & (y ^ z)) == ((x & y) ^ (x & z)));
+
+        //        require(x + y == (x ^ y) + ((x & y) << 1));
+        //        require(~(x | y) == (~x & ~y));
+        //require(x - y == ~(~x + y));
+        require((x | (x & y)) == x);
+        require((x & (x | y)) == x);
+
+    }
+
+
+    public function boolAlgebra(bool x, bool y, bool z) {
+        require((x || (y || z)) == ((x || y) || z));
+        require((x && (y && z)) == ((x && y) && z));
+        require((x || y) == (y || x));
+        require((x && y) == (y && x));
+        require((x && (y || z)) == (x && y || x && z));
+    }
+
+    public function mathAlgebra(int x, int y, int z) {
+        require(x * -1 == -x);
+        require(x * 0 == 0);
+        require(x / 1 == x);
+        require((x + 1) * (x + 4) == (x + 2) * (x + 3) - 2);
+    }
+
+
+
+    static function getFF(int x): int {
+        bytes b = pack(x);
+        int len = len(b);
+        const bytes ff = b'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+        bytes r =  ff[:len];
+        return unpack(r);
+    }
+
+
+}

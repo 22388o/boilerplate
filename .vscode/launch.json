@@ -4,6 +4,32 @@
     {
       "type": "scrypt",
       "request": "launch",
+      "name": "Debug identity:bitwiseAlgebra",
+      "program": "${workspaceFolder}/contracts/identity.scrypt",
+      "constructorArgs": [
+        
+      ],
+      "pubFunc": "bitwiseAlgebra",
+      "pubFuncArgs": [
+        -1, -1, -1
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
+      "name": "Debug Demo",
+      "program": "${workspaceFolder}/contracts/intBitwise.scrypt",
+      "constructorArgs": [
+        
+      ],
+      "pubFunc": "unlock",
+      "pubFuncArgs": [
+        1, 4
+      ]
+    },
+    {
+      "type": "scrypt",
+      "request": "launch",
       "name": "Debug arraySub1:unlock",
       "program": "${workspaceFolder}/contracts/arraySub1.scrypt",
       "constructorArgs": [1, [{
