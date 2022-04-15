@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { buildContractClass, Int } = require('scryptlib');
+const { buildContractClass, Int, readLaunchJson } = require('scryptlib');
 const { compileContract, getRandomInt } = require('../../helper');
 
 describe('Test sCrypt contract identity In Javascript', () => {
@@ -22,6 +22,10 @@ describe('Test sCrypt contract identity In Javascript', () => {
       let z = new Int(getRandomInt(-100000000000, 100000000000));
 
       result = test.bitwiseAlgebra(x, y, z).verify()
+
+      if(result.success === false) {
+        console.log(JSON.stringify(readLaunchJson(result.error)))
+      }
       expect(result.success, result.error).to.be.true
     }
 
@@ -37,6 +41,9 @@ describe('Test sCrypt contract identity In Javascript', () => {
       let z = getRandomInt(-100000000000, 100000000000) > 0;
 
       result = test.boolAlgebra(x, y, z).verify()
+      if(result.success === false) {
+        console.log(JSON.stringify(readLaunchJson(result.error)))
+      }
       expect(result.success, result.error).to.be.true
     }
 
@@ -52,8 +59,33 @@ describe('Test sCrypt contract identity In Javascript', () => {
       let z = new Int(getRandomInt(-100000000000, 100000000000));
 
       result = test.mathAlgebra(x, y, z).verify()
+      if(result.success === false) {
+        console.log(JSON.stringify(readLaunchJson(result.error)))
+      }
       expect(result.success, result.error).to.be.true
     }
+
+  });
+
+
+  it('shiftAlgebra should return true', () => {
+
+    let counter = 1000;
+
+    while (--counter > 0) {
+      let x = new Int(getRandomInt(-100000000000, 100000000000));
+      let y = new Int(getRandomInt(0, 1000));
+
+      result = test.shiftAlgebra(x, y).verify()
+      if(result.success === false) {
+        console.log(JSON.stringify(readLaunchJson(result.error)))
+      }
+      expect(result.success, result.error).to.be.true
+    }
+
+    let x = new Int(getRandomInt(-100000000000, 100000000000));
+    result = test.shiftAlgebra(x, -1).verify()
+    expect(result.success, result.error).to.be.false
 
   });
   

@@ -72,6 +72,10 @@ contract Test {
     }
 
 
+    public function shiftAlgebra(int x, int y) {
+        require((x << y) >> y == x);
+    }
+
 
     static function getFF(int x): int {
         bytes b = pack(x);
